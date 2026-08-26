@@ -564,31 +564,31 @@ Private Sub CmdCofre_Click()
 End Sub
 
 Private Sub cmdCompactarDestino_Click()
-Dim scaminho As String
-    scaminho = txtArquivoDestino.Text ' Assumindo que o alvo da compactação é o destino
+Dim sCaminho As String
+    sCaminho = txtArquivoDestino.Text ' Assumindo que o alvo da compactação é o destino
     
-    If EArquivoSQLite(scaminho) Then
-        If CompactarSQLite(scaminho) Then
+    If EArquivoSQLite(sCaminho) Then
+        If CompactarSQLite(sCaminho) Then
             MsgBox "SQLite compactado com sucesso (VACUUM executado).", vbInformation
         End If
     Else
         ' Chama a sua função antiga de compactação do Access
-        If CompactAccess(scaminho) Then
+        If CompactAccess(sCaminho) Then
             MsgBox "Access compactado com sucesso (JRO executado).", vbInformation
         End If
     End If
 End Sub
 Private Sub cmdCompactarOrigem_Click()
-Dim scaminho As String
-    scaminho = TxTArquivoOrigem.Text ' Assumindo que o alvo da compactação é o destino
+Dim sCaminho As String
+    sCaminho = TxTArquivoOrigem.Text ' Assumindo que o alvo da compactação é o destino
     
-    If EArquivoSQLite(scaminho) Then
-        If CompactarSQLite(scaminho) Then
+    If EArquivoSQLite(sCaminho) Then
+        If CompactarSQLite(sCaminho) Then
             MsgBox "SQLite compactado com sucesso (VACUUM executado).", vbInformation
         End If
     Else
         ' Chama a sua função antiga de compactação do Access
-        If CompactAccess(scaminho) Then
+        If CompactAccess(sCaminho) Then
             MsgBox "Access compactado com sucesso (JRO executado).", vbInformation
         End If
     End If
@@ -611,13 +611,13 @@ frmCadastroDSN.Show vbModal, Me
 End Sub
 
 Private Sub CmdEscdir_Click()
-Dim scaminho As String
+Dim sCaminho As String
 '    sCaminho = SelecionarPasta("Selecione a pasta contendo dos arquivos MDB:")
     CommonDialog1.ShowFolder
-    scaminho = CommonDialog1.FolderName
+    sCaminho = CommonDialog1.FolderName
     
-   If scaminho <> "" Then
-        Diretorio.Text = scaminho
+   If sCaminho <> "" Then
+        Diretorio.Text = sCaminho
     End If
 End Sub
 
@@ -632,13 +632,13 @@ Private Sub CmdEscolheDestino_Click()
         .FilterIndex = 1
         .DialogTitle = "Selecione ou crie o ficheiro de Destino"
        '.Flags = cdlOFNOverwritePrompt Or cdlOFNPathMustExist ' Avisa se sobrescrever
-        .filename = ""
+        .FileName = ""
         .ShowSave ' Usamos ShowSave em vez de ShowOpen para permitir indicar novos nomes
     End With
     
     ' Grava o caminho no TextBox
-    If CommonDialog1.filename <> "" Then
-        txtArquivoDestino.Text = CommonDialog1.filename
+    If CommonDialog1.FileName <> "" Then
+        txtArquivoDestino.Text = CommonDialog1.FileName
     End If
     
     If Not ValidarOuCriarDestino(txtArquivoDestino.Text) Then
@@ -663,12 +663,12 @@ Private Sub CmdEscolheOrigem_Click()
                            
     CommonDialog1.FilterIndex = 1
     CommonDialog1.DialogTitle = "Selecione o arquivo de Origem"
-    CommonDialog1.filename = ""
+    CommonDialog1.FileName = ""
     CommonDialog1.ShowOpen
     
     ' Verifica se o usuário selecionou um arquivo e cancelou
-    If CommonDialog1.filename <> "" Then
-        TxTArquivoOrigem.Text = CommonDialog1.filename
+    If CommonDialog1.FileName <> "" Then
+        TxTArquivoOrigem.Text = CommonDialog1.FileName
     End If
     
         
@@ -795,9 +795,9 @@ End Sub
 Private Sub cmdSelSQL_Click()
   On Error Resume Next
     CommonDialog1.Filter = "Script SQL (*.sql)|*.sql"
-    CommonDialog1.filename = "correcao_indices.sql"
+    CommonDialog1.FileName = "correcao_indices.sql"
     CommonDialog1.ShowSave
-    If CommonDialog1.filename <> "" Then txtSQL.Text = CommonDialog1.filename
+    If CommonDialog1.FileName <> "" Then txtSQL.Text = CommonDialog1.FileName
 End Sub
 Private Sub CmdTableDestinoInfo_Click()
 ' Verifica se um arquivo foi selecionado
@@ -865,3 +865,7 @@ Private Sub cmdSqlDestino_Click()
     GerarScriptsSQL txtArquivoDestino.Text, (CheckIncDados.Value = vbChecked)
 End Sub
 
+Private Sub Form_Load()
+  'https://www.vbforums.com/showthread.php?912221-Modernizing-standard-VB6-controls-without-external-OCXs-or-a-manifest
+  'ModernizeFormControls Me
+End Sub
